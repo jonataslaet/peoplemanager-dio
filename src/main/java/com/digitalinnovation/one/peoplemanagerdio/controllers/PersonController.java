@@ -1,5 +1,9 @@
 package com.digitalinnovation.one.peoplemanagerdio.controllers;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digitalinnovation.one.peoplemanagerdio.domain.Person;
+import com.digitalinnovation.one.peoplemanagerdio.controllers.dtos.PersonDTO;
 import com.digitalinnovation.one.peoplemanagerdio.services.PersonService;
 
 @RestController
@@ -19,18 +23,18 @@ public class PersonController {
 	@Autowired
 	private PersonService personService;
 	
-	@GetMapping
-	public String getBook() {
-		return "API Test!";
-	}
-	
 	@GetMapping("/{id}")
-	public ResponseEntity<Person> find(@PathVariable("id") Long id){
+	public ResponseEntity<PersonDTO> find(@PathVariable("id") Long id){
 		return personService.findById(id);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Person> insert(@RequestBody Person person){
+	public ResponseEntity<PersonDTO> insert(@RequestBody @Valid PersonDTO person){
 		return personService.insert(person);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<PersonDTO>> findAll(){
+		return personService.findAll();
 	}
 }

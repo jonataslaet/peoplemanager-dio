@@ -2,6 +2,7 @@ package com.digitalinnovation.one.peoplemanagerdio.domain;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.digitalinnovation.one.peoplemanagerdio.controllers.dtos.PersonDTO;
 
 @Entity
 public class Person {
@@ -35,14 +38,14 @@ public class Person {
 
 	public Person() {
 	}
-
-	public Person(Long id, String firstName, String lastName, String cpf, LocalDate birthDate, List<Phone> phones) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.cpf = cpf;
-		this.birthDate = birthDate;
-		this.phones = phones;
+	
+	public Person(PersonDTO foundPerson) {
+		this.id = foundPerson.getId();
+		this.firstName = foundPerson.getFirstName();
+		this.lastName = foundPerson.getLastName();
+		this.cpf = foundPerson.getCpf();
+		this.birthDate = foundPerson.getBirthDate();
+		this.phones = foundPerson.getPhones().stream().map(p -> new Phone(p)).collect(Collectors.toList());
 	}
 
 	public Long getId() {
@@ -116,6 +119,10 @@ public class Person {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public static List<PersonDTO> toDTOlist(List<Person> people){
+		return people.stream().map(p -> new PersonDTO(p)).collect(Collectors.toList());
 	}
 
 }

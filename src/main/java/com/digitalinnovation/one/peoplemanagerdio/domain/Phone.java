@@ -1,6 +1,5 @@
 package com.digitalinnovation.one.peoplemanagerdio.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.digitalinnovation.one.peoplemanagerdio.controllers.dtos.PhoneDTO;
 import com.digitalinnovation.one.peoplemanagerdio.domain.enums.PhoneType;
 
 @Entity
@@ -20,17 +20,15 @@ public class Phone {
 	@Enumerated(EnumType.STRING)
 	private PhoneType type;
 	
-	@Column(nullable=false)
 	private String number;
 	
 	public Phone() {
 	}
-	
-	public Phone(Long id, PhoneType type, String number) {
-		super();
-		this.id = id;
-		this.type = type;
-		this.number = number;
+
+	public Phone(PhoneDTO phone) {
+		this.id = phone.getId();
+		this.type = phone.getType();
+		this.number = phone.getNumber();
 	}
 
 	public Long getId() {
