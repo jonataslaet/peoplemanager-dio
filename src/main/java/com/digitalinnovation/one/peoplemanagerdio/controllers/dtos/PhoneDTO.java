@@ -16,7 +16,7 @@ public class PhoneDTO {
 	private PhoneType type;
 	
 	@NotEmpty
-	@Size(min = 5, max=10)
+	@Size(min = 5, max=11)
 	private String number;
 	
 	public PhoneDTO() {
