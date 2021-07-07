@@ -50,4 +50,42 @@ public class PersonService {
 		List<Person> allPeople = personRepository.findAll();
 		return ResponseEntity.ok(Person.toDTOlist(allPeople));
 	}
+	
+	public ResponseEntity<Void> update(Long id, PersonDTO personDTO) {
+		Person foundPerson = findOneById(id);
+		if (foundPerson == null) {
+			return ResponseEntity.notFound().build();
+		}
+		Person newPerson = new Person(personDTO);
+		personRepository.save(getUpdatedPerson(foundPerson, newPerson));
+		return ResponseEntity.noContent().build();
+	}
+	
+	private Person getUpdatedPerson(Person updatedPerson, Person newPerson) {
+		if (newPerson.getBirthDate() != null){
+			updatedPerson.setBirthDate(newPerson.getBirthDate());
+		}
+		if (newPerson.getCpf() != null && !newPerson.getCpf().isBlank()){
+			updatedPerson.setCpf(newPerson.getCpf());
+		}
+		if (newPerson.getFirstName() != null && !newPerson.getFirstName().isBlank()){
+			updatedPerson.setBirthDate(newPerson.getBirthDate());
+		}
+		if (newPerson.getLastName() != null && !newPerson.getLastName().isBlank()){
+			updatedPerson.setLastName(newPerson.getLastName());
+		}
+		if (newPerson.getPhones() != null && !newPerson.getPhones().isEmpty()){
+			updatedPerson.setPhones(newPerson.getPhones());
+		}
+		return updatedPerson;
+	}
+
+	public ResponseEntity<Void> deleteById(Long id) {
+		Person foundPerson = findOneById(id);
+		if (foundPerson == null) {
+			return ResponseEntity.notFound().build();
+		}
+		personRepository.deleteById(id);
+		return ResponseEntity.noContent().build();
+	}
 }
